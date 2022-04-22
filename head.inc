@@ -5,7 +5,7 @@ includelib  "C:\irvine\Irvine32.lib"
 
 .486
 .model flat,stdcall
-.stack 40960
+.stack 4096
 
 ;-------------------- Myproc ----------------------
 
