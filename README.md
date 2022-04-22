@@ -15,5 +15,5 @@
 #### 使用说明
 
 程序命令格式 : 程序名称  加密选项  文件名   
-例如： myexe e notepad.exe
+例如： test e notepad.exe
 
