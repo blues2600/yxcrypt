@@ -1,4 +1,4 @@
-; asmMain.asm的头文件
+; asmMain.asm header
 
 includelib	"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.18362.0\um\x86\kernel32.Lib"
 includelib  "C:\irvine\Irvine32.lib"
@@ -7,7 +7,7 @@ includelib  "C:\irvine\Irvine32.lib"
 .model flat,stdcall
 .stack 40960
 
-;-------------------- 自己的proc ----------------------
+;-------------------- Myproc ----------------------
 
 findStr proto,source:ptr byte,strSize:dword,target:word
 myReadFile proto ,fileHandleR:DWORD,bufR:ptr byte,bytesR:dword	
