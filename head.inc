@@ -1,18 +1,19 @@
-; asmMain.asm header
+; header file
 
 includelib	"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.18362.0\um\x86\kernel32.Lib"
 includelib  "C:\irvine\Irvine32.lib"
 
 .486
 .model flat,stdcall
-.stack 40960
+.stack 4096
 
-;-------------------- Myproc ----------------------
+;-------------------- my proc ----------------------
 
 findStr proto,source:ptr byte,strSize:dword,target:word
 myReadFile proto ,fileHandleR:DWORD,bufR:ptr byte,bytesR:dword	
 myWirteFile proto ,fileHandleW:DWORD,bufW:ptr byte,bytesW:dword	
 myROR	proto ,bufROR:ptr byte,	bufSize:dword
+myROL	proto ,bufROL:ptr byte,	BufSize:dword
 
 
 ;-------------------- win32 api ----------------------

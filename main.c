@@ -11,9 +11,8 @@
 /*********************************************************************************************************/
 
 #include <stdio.h>
-#include <string.h>
 
-extern void  asmMain(char *fname);				//外部汇编过程
+extern void  asmMain(char *fname, char op);				//外部汇编过程
 
 int main(int argc, char* argv[])
 {
@@ -26,14 +25,14 @@ int main(int argc, char* argv[])
 	//程序加密
 	if (*argv[1] == 'e') {
 		
-		asmMain(argv[2]);						//调用asm过程
+		asmMain(argv[2],'e');							//调用asm过程
 		return 0;
 	}
 
 	//程序解密
 	if (*argv[1] == 'd') {
-												//还没写
-		return 1;
+		asmMain(argv[2], 'd');							//还没写
+		return 0;
 	}
 
 	//输入的命令参数无效
