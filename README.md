@@ -1,37 +1,31 @@
 # asm
 
 #### 介绍
-存放汇编程序
-
-#### 软件架构
-软件架构说明
 
 
-#### 安装教程
+- 这是一个简单的文件加密程序，可以对文件加密和解密
+- 程序使用 C 和 MASM32 汇编语言混合的方式编写
+- C代码主要用来接收命令行参数，并调用相关汇编过程
+- 汇编代码实现程序的功能，其中，加密使用ROR指令移位来实现，文件操作使用win32 api
+- 代码中调用了很多Irvine32汇编过程用来方便输出，下载相关库文件请访问 http://www.asmirvine.com/
+- 从main.c开始阅读
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+
+
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+命令格式 : 程序名称  加密选项  文件名   
+例如： test e notepad.exe
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+#### 编译和链接
 
 
-#### 特技
+1. 我用的visual studio 2019 
+1. 首先，汇编asmMain.asm，但不进行链接，生成asmMain.obj
+1. 将asmMain.obj添加到C++项目
+1. 构建并运行项目
+1. 如果修改了asmMain.asm，则运行前，需要再一次汇编
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+
+
