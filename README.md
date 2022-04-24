@@ -15,8 +15,9 @@
 
 #### 使用说明
 
-命令格式 : 程序名称  加密选项  文件名   
-例如： test e notepad.exe
+命令 : 程序名称  加密选项  文件名   
+加密： test   e   notepad.exe
+解密： test   d   notepad.exe
 
 #### 编译和链接
 
