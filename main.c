@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
 	//程序解密
 	if (*argv[1] == 'd') {
-		asmMain(argv[2], 'd');							//还没写
+		asmMain(argv[2], 'd');							//调用asm过程
 		return 0;
 	}
 

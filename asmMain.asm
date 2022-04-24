@@ -8,7 +8,7 @@ fileHandle				dword				0
 fileSize				dword				0
 newFile					byte				"c:\\newFile.exe",0
 newFileHandle			dword				0
-msg1					byte				"the file size is: ",0
+msg1					byte				"the file size: ",0
 msgErr2					byte				"get file size error.",0
 msgErr3					byte				"move file pointer error.",0
 msgErr4					byte				"read file error.",0
@@ -52,8 +52,9 @@ fileOpen2:
 
 			;获取文件大小
 			invoke		GetFileSize, fileHandle,lpFileSize
-			cmp			lpFileSize,0
-			jz			getFileSizeok								;成功获得文件大小
+			cmp			eax,0
+			jnz			getFileSizeok								;成功获得文件大小
+			call		Crlf
 			mov			edx,offset msgErr2							;获取文件大小失败
 			call		WriteString
 			jmp			quit
@@ -122,7 +123,7 @@ _1Byte:
 finish:
 			;输出程序完成的信息
 			mov			edx,offset msgFinish
-			call		WriteChar
+			call		WriteString
 
 quit:
 			invoke	ExitProcess,0
