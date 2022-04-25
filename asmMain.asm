@@ -23,105 +23,105 @@ lpError					dword				0
 .code
 asmMain proc c,
 			fileName:ptr byte,										
-			operation:byte											;ÒªÖ´ĞĞµÄ²Ù×÷£¬¼ÓÃÜ»ò½âÃÜ
+			operation:byte											;è¦æ‰§è¡Œçš„æ“ä½œï¼ŒåŠ å¯†æˆ–è§£å¯†
 	
-			;´ò¿ªÔ´ÎÄ¼ş
+			;æ‰“å¼€æºæ–‡ä»¶
 			invoke		CreateFileA, fileName, GENERIC_READ, 0, NULL,OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
 			cmp			eax,INVALID_HANDLE_VALUE		
-			jne			fileOpen									;ÎÄ¼ş´ò¿ª³É¹¦
-			call		GetLastError								;»ñÈ¡´íÎó±àºÅ
+			jne			fileOpen									;æ–‡ä»¶æ‰“å¼€æˆåŠŸ
+			call		GetLastError								;è·å–é”™è¯¯ç¼–å·
 			invoke		FormatMessageA,FORMAT_MESSAGE_ALLOCATE_BUFFER+FORMAT_MESSAGE_FROM_SYSTEM, NULL, eax,NULL,ADDR lpError,NULL, NULL
-			mov			edx,lpError									;Êä³öÏµÍ³´íÎóĞÅÏ¢
+			mov			edx,lpError									;è¾“å‡ºç³»ç»Ÿé”™è¯¯ä¿¡æ¯
 			call		WriteString
 			jmp			quit
 fileOpen:
 			mov			fileHandle,eax
 
 
-			;´ò¿ªÄ¿±êÎÄ¼ş
+			;æ‰“å¼€ç›®æ ‡æ–‡ä»¶
 			invoke		CreateFileA, addr newFile, GENERIC_WRITE, 0, NULL,CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
 			cmp			eax,INVALID_HANDLE_VALUE		
-			jne			fileOpen2									;ÎÄ¼ş´ò¿ª³É¹¦
-			call		GetLastError								;»ñÈ¡´íÎó±àºÅ
+			jne			fileOpen2									;æ–‡ä»¶æ‰“å¼€æˆåŠŸ
+			call		GetLastError								;è·å–é”™è¯¯ç¼–å·
 			invoke		FormatMessageA,FORMAT_MESSAGE_ALLOCATE_BUFFER+FORMAT_MESSAGE_FROM_SYSTEM, NULL, eax,NULL,ADDR lpError,NULL, NULL
-			mov			edx,lpError									;Êä³öÏµÍ³´íÎóĞÅÏ¢
+			mov			edx,lpError									;è¾“å‡ºç³»ç»Ÿé”™è¯¯ä¿¡æ¯
 			call		WriteString
 			jmp			quit
 fileOpen2:
 			mov			newFileHandle,eax
 
-			;»ñÈ¡ÎÄ¼ş´óĞ¡
+			;è·å–æ–‡ä»¶å¤§å°
 			invoke		GetFileSize, fileHandle,lpFileSize
 			cmp			eax,0
-			jnz			getFileSizeok								;³É¹¦»ñµÃÎÄ¼ş´óĞ¡
+			jnz			getFileSizeok								;æˆåŠŸè·å¾—æ–‡ä»¶å¤§å°
 			call		Crlf
-			mov			edx,offset msgErr2							;»ñÈ¡ÎÄ¼ş´óĞ¡Ê§°Ü
+			mov			edx,offset msgErr2							;è·å–æ–‡ä»¶å¤§å°å¤±è´¥
 			call		WriteString
 			jmp			quit
 
 getFileSizeok:							
-			mov			fileSize,eax								;±£´æÎÄ¼ş´óĞ¡
-			mov			edx,offset msg1								;Êä³öÎÄ¼ş´óĞ¡ĞÅÏ¢
+			mov			fileSize,eax								;ä¿å­˜æ–‡ä»¶å¤§å°
+			mov			edx,offset msg1								;è¾“å‡ºæ–‡ä»¶å¤§å°ä¿¡æ¯
 			call		WriteString
 			mov			eax,fileSize
 			call		WriteDec
 			call		Crlf
 			call		Crlf
 
-			;¸ù¾İÎÄ¼ş´óĞ¡£¬¾ö¶¨ÈçºÎ°ÑÊı¾İĞ´ÈëĞÂÎÄ¼ş
+			;æ ¹æ®æ–‡ä»¶å¤§å°ï¼Œå†³å®šå¦‚ä½•æŠŠæ•°æ®å†™å…¥æ–°æ–‡ä»¶
 			mov			edx,0										; edx:eax / 100
 			mov			eax,fileSize
 			mov			ecx,100
 			div			ecx
-			mov			specWriteByte,edx							;ÓàÊıĞèÒªÌØÊâ´¦Àí
-			mov			ecx,eax										;Êı¾İĞ´Èë´ÎÊı£¬Ã¿´Î100¸ö×Ö½Ú
+			mov			specWriteByte,edx							;ä½™æ•°éœ€è¦ç‰¹æ®Šå¤„ç†
+			mov			ecx,eax										;æ•°æ®å†™å…¥æ¬¡æ•°ï¼Œæ¯æ¬¡100ä¸ªå­—èŠ‚
 
-			;¸ù¾İÓÃ»§ÃüÁî£¬Ìø×ª¼ÓÃÜ»ò½âÃÜ´úÂë¶Î
+			;æ ¹æ®ç”¨æˆ·å‘½ä»¤ï¼Œè·³è½¬åŠ å¯†æˆ–è§£å¯†ä»£ç æ®µ
 			cmp			operation,"d"								
-			je			decode										; Ìø×ª½âÃÜ´úÂë¶Î
+			je			decode										; è·³è½¬è§£å¯†ä»£ç æ®µ
 
-			;¶ÁÈ¡Êı¾İ²¢¼ÓÃÜ£¬È»ºóĞ´µ½ĞÂÎÄ¼ş
+			;è¯»å–æ•°æ®å¹¶åŠ å¯†ï¼Œç„¶åå†™åˆ°æ–°æ–‡ä»¶
 write100Byte:
 			push		ecx
-			invoke		myReadFile,fileHandle,addr fileData,100		;´ÓÎÄ¼ş¶ÁÈ¡Êı¾İ
-			invoke		myROR,addr fileData,100						;¶ÔÊı¾İ½øĞĞ¼ÓÃÜ
-			invoke		myWirteFile,newFileHandle,addr fileData,100 ;°Ñ¼ÓÃÜÊı¾İĞ´ÈëÎÄ¼ş
+			invoke		myReadFile,fileHandle,addr fileData,100		;ä»æ–‡ä»¶è¯»å–æ•°æ®
+			invoke		myROR,addr fileData,100						;å¯¹æ•°æ®è¿›è¡ŒåŠ å¯†
+			invoke		myWirteFile,newFileHandle,addr fileData,100 ;æŠŠåŠ å¯†æ•°æ®å†™å…¥æ–‡ä»¶
 			pop			ecx
 			loop		write100Byte
 
-			;µ½ÁËÎÄ¼şÄ©Î²£¬¶ÁÈ¡Êı¾İ²¢¼ÓÃÜ£¬È»ºóĞ´µ½ĞÂÎÄ¼ş
-			mov			ecx,specWriteByte							;Êı¾İĞ´Èë´ÎÊı£¬Ã¿´Î1¸ö×Ö½Ú
+			;åˆ°äº†æ–‡ä»¶æœ«å°¾ï¼Œè¯»å–æ•°æ®å¹¶åŠ å¯†ï¼Œç„¶åå†™åˆ°æ–°æ–‡ä»¶
+			mov			ecx,specWriteByte							;æ•°æ®å†™å…¥æ¬¡æ•°ï¼Œæ¯æ¬¡1ä¸ªå­—èŠ‚
 writeByte:
 			push		ecx
-			invoke		myReadFile,fileHandle,addr fileData,1		;´ÓÎÄ¼ş¶ÁÈ¡Êı¾İ
-			invoke		myROR,addr fileData,1						;¶ÔÊı¾İ½øĞĞ¼ÓÃÜ
-			invoke		myWirteFile,newFileHandle,addr fileData,1   ;°Ñ¼ÓÃÜÊı¾İĞ´ÈëÎÄ¼ş
+			invoke		myReadFile,fileHandle,addr fileData,1		;ä»æ–‡ä»¶è¯»å–æ•°æ®
+			invoke		myROR,addr fileData,1						;å¯¹æ•°æ®è¿›è¡ŒåŠ å¯†
+			invoke		myWirteFile,newFileHandle,addr fileData,1   ;æŠŠåŠ å¯†æ•°æ®å†™å…¥æ–‡ä»¶
 			pop			ecx
 			loop		writeByte
-			jmp			finish										;¼ÓÃÜÍê³É
+			jmp			finish										;åŠ å¯†å®Œæˆ
 
-			;¶ÁÈ¡Êı¾İ²¢½âÃÜ£¬È»ºóĞ´µ½ĞÂÎÄ¼ş
+			;è¯»å–æ•°æ®å¹¶è§£å¯†ï¼Œç„¶åå†™åˆ°æ–°æ–‡ä»¶
 decode:
 _100Byte:
 			push		ecx
-			invoke		myReadFile,fileHandle,addr fileData,100		;´ÓÎÄ¼ş¶ÁÈ¡Êı¾İ
-			invoke		myROL,addr fileData,100						;¶ÔÊı¾İ½øĞĞ¼ÓÃÜ
-			invoke		myWirteFile,newFileHandle,addr fileData,100 ;°Ñ¼ÓÃÜÊı¾İĞ´ÈëÎÄ¼ş
+			invoke		myReadFile,fileHandle,addr fileData,100		;ä»æ–‡ä»¶è¯»å–æ•°æ®
+			invoke		myROL,addr fileData,100						;å¯¹æ•°æ®è¿›è¡ŒåŠ å¯†
+			invoke		myWirteFile,newFileHandle,addr fileData,100 ;æŠŠåŠ å¯†æ•°æ®å†™å…¥æ–‡ä»¶
 			pop			ecx
 			loop		_100Byte
 
-			;µ½ÁËÎÄ¼şÄ©Î²£¬¶ÁÈ¡Êı¾İ²¢¼ÓÃÜ£¬È»ºóĞ´µ½ĞÂÎÄ¼ş
-			mov			ecx,specWriteByte							;Êı¾İĞ´Èë´ÎÊı£¬Ã¿´Î1¸ö×Ö½Ú
+			;åˆ°äº†æ–‡ä»¶æœ«å°¾ï¼Œè¯»å–æ•°æ®å¹¶åŠ å¯†ï¼Œç„¶åå†™åˆ°æ–°æ–‡ä»¶
+			mov			ecx,specWriteByte							;æ•°æ®å†™å…¥æ¬¡æ•°ï¼Œæ¯æ¬¡1ä¸ªå­—èŠ‚
 _1Byte:
 			push		ecx
-			invoke		myReadFile,fileHandle,addr fileData,1		;´ÓÎÄ¼ş¶ÁÈ¡Êı¾İ
-			invoke		myROL,addr fileData,1						;¶ÔÊı¾İ½øĞĞ¼ÓÃÜ
-			invoke		myWirteFile,newFileHandle,addr fileData,1   ;°Ñ¼ÓÃÜÊı¾İĞ´ÈëÎÄ¼ş
+			invoke		myReadFile,fileHandle,addr fileData,1		;ä»æ–‡ä»¶è¯»å–æ•°æ®
+			invoke		myROL,addr fileData,1						;å¯¹æ•°æ®è¿›è¡ŒåŠ å¯†
+			invoke		myWirteFile,newFileHandle,addr fileData,1   ;æŠŠåŠ å¯†æ•°æ®å†™å…¥æ–‡ä»¶
 			pop			ecx
 			loop		_1Byte
 
 finish:
-			;Êä³ö³ÌĞòÍê³ÉµÄĞÅÏ¢
+			;è¾“å‡ºç¨‹åºå®Œæˆçš„ä¿¡æ¯
 			mov			edx,offset msgFinish
 			call		WriteString
 
@@ -129,20 +129,20 @@ quit:
 			invoke	ExitProcess,0
 asmMain endp
 
-; ¶Ôwin32 api readfileµÄ·â×°
+; å¯¹win32 api readfileçš„å°è£…
 myReadFile proc uses edx eax,
-			fileHandleR:DWORD,								;ÎÄ¼ş¾ä±ú
-			bufR:ptr byte,									;»º³åÇøÖ¸Õë
-			bytesR:dword									;×Ö½ÚÊı
+			fileHandleR:DWORD,								;æ–‡ä»¶å¥æŸ„
+			bufR:ptr byte,									;ç¼“å†²åŒºæŒ‡é’ˆ
+			bytesR:dword									;å­—èŠ‚æ•°
 	local	ReadBytes:dword
 
-			;µ÷ÓÃwin32 api
+			;è°ƒç”¨win32 api
 			invoke		ReadFile,fileHandleR,bufR,bytesR,addr ReadBytes,NULL
 			cmp			eax,0
-			jnz			read_ok								;³É¹¦¶ÁÈ¡
-			call		GetLastError						;¶ÁÈ¡Ê§°Ü
-			push		eax									;±£´æ´íÎóºÅ
-			call		WriteDec							;Êä³ö´íÎóºÅ
+			jnz			read_ok								;æˆåŠŸè¯»å–
+			call		GetLastError						;è¯»å–å¤±è´¥
+			push		eax									;ä¿å­˜é”™è¯¯å·
+			call		WriteDec							;è¾“å‡ºé”™è¯¯å·
 			call		Crlf
 			pop			eax
 			invoke		FormatMessageA,FORMAT_MESSAGE_ALLOCATE_BUFFER+FORMAT_MESSAGE_FROM_SYSTEM, NULL, eax,NULL,ADDR tempPointer,NULL, NULL
@@ -153,19 +153,19 @@ myReadFile proc uses edx eax,
 			ret
 myReadFile endp
 
-; ¶Ôwin32 api writefileµÄ·â×°
+; å¯¹win32 api writefileçš„å°è£…
 myWirteFile proc uses edx eax,
-			fileHandleW:DWORD,								;ÎÄ¼ş¾ä±ú
-			bufW:ptr byte,									;»º³åÇøÖ¸Õë
-			bytesW:dword									;×Ö½ÚÊı
+			fileHandleW:DWORD,								;æ–‡ä»¶å¥æŸ„
+			bufW:ptr byte,									;ç¼“å†²åŒºæŒ‡é’ˆ
+			bytesW:dword									;å­—èŠ‚æ•°
 
-			;µ÷ÓÃwin32 api
+			;è°ƒç”¨win32 api
 			invoke		WriteFile,fileHandleW,bufW,bytesW,addr tempPointer	,NULL
 			cmp			eax,0
-			jnz			write_ok							;³É¹¦Ğ´Èë
-			call		GetLastError						;Ğ´ÈëÊ§°Ü
-			push		eax									;±£´æ´íÎó´úÂë
-			call		WriteDec							;Êä³ö´íÎó´úÂë
+			jnz			write_ok							;æˆåŠŸå†™å…¥
+			call		GetLastError						;å†™å…¥å¤±è´¥
+			push		eax									;ä¿å­˜é”™è¯¯ä»£ç 
+			call		WriteDec							;è¾“å‡ºé”™è¯¯ä»£ç 
 			call		Crlf
 			pop			eax
 			invoke		FormatMessageA,FORMAT_MESSAGE_ALLOCATE_BUFFER+FORMAT_MESSAGE_FROM_SYSTEM, NULL, eax,NULL,ADDR tempPointer,NULL, NULL
@@ -176,30 +176,30 @@ myWirteFile proc uses edx eax,
 			ret
 myWirteFile endp
 
-; ¶Ô¸ø¶¨µØÖ·µÄÊı¾İ½øĞĞror²Ù×÷
+; å¯¹ç»™å®šåœ°å€çš„æ•°æ®è¿›è¡Œroræ“ä½œ
 myROR	proc uses esi ecx,
-			bufROR:ptr byte,								;Òª¼ÓÃÜµÄÊı¾İµØÖ·
-			bufSize:dword									;×Ö½ÚÊı
+			bufROR:ptr byte,								;è¦åŠ å¯†çš„æ•°æ®åœ°å€
+			bufSize:dword									;å­—èŠ‚æ•°
 
 			mov			esi,bufROR
 			mov			ecx,bufSize
 	beginR:
-			ror			byte ptr [esi],1					;ÏòÓÒÒÆ¶¯1Î»
+			ror			byte ptr [esi],1					;å‘å³ç§»åŠ¨1ä½
 			inc			esi
 			loop		beginR
 
 			ret
 myROR	endp
 
-; ¶Ô¸ø¶¨µØÖ·µÄÊı¾İ½øĞĞrol²Ù×÷
+; å¯¹ç»™å®šåœ°å€çš„æ•°æ®è¿›è¡Œrolæ“ä½œ
 myROL	proc uses esi ecx,
-			bufROL:ptr byte,								;Òª¼ÓÃÜµÄÊı¾İµØÖ·
-			BufSize:dword									;×Ö½ÚÊı
+			bufROL:ptr byte,								;è¦åŠ å¯†çš„æ•°æ®åœ°å€
+			BufSize:dword									;å­—èŠ‚æ•°
 
 			mov			esi,bufROL
 			mov			ecx,BufSize
 	beginL:
-			rol			byte ptr [esi],1					;ÏòÓÒÒÆ¶¯1Î»
+			rol			byte ptr [esi],1					;å‘å·¦ç§»åŠ¨1ä½
 			inc			esi
 			loop		beginL
 
