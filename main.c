@@ -19,24 +19,21 @@ int main(int argc, char* argv[])
 	//检查参数数量
 	if (argc != 3 ) {
 		printf("不正确的命令格式。\n");
-		return 0;
+		return -1;
 	}
 
 	//程序加密
 	if (*argv[1] == 'e') {
-		
 		asmMain(argv[2],'e');							//调用asm过程
-		return 0;
 	}
 
 	//程序解密
 	if (*argv[1] == 'd') {
 		asmMain(argv[2], 'd');							//调用asm过程
-		return 0;
 	}
 
 	//输入的命令参数无效
 	printf("无效的命令参数。\n");
 
-	return 0;
+	return -1;
 }
